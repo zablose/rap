@@ -1,0 +1,28 @@
+{
+    "name": "zablose/rap",
+    "description": "RaP - Roles and Permissions",
+    "keywords": [
+        "roles",
+        "permissions",
+        "laravel"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sergejs Zablockis",
+            "email": "zablose@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.0",
+        "illuminate/database": "^5.3",
+        "illuminate/http": "^5.3"
+    },
+    "require-dev": {
+    },
+    "autoload": {
+        "psr-4": {
+            "Zablose\\Rap\\": "src/"
+        }
+    }
+}
