@@ -42,7 +42,7 @@ class Rap
      */
     public function roles()
     {
-        return $this->user->belongsToMany(config('rap.models.role'))->withTimestamps();
+        return $this->user->belongsToMany(config('rap.models.role'), config('rap.tables.role_user'))->withTimestamps();
     }
 
     /**
@@ -115,10 +115,12 @@ class Rap
      */
     public function hasRole($role)
     {
-        return $this->getRoles()->contains(function ($key, $value) use ($role)
+        $ids_or_names = $this->getRoles()->map(function ($item) use ($role)
         {
-            return $role === $value->id;
-        });
+            return is_numeric($role) ? $item->id : $item->name;
+        })->all();
+
+        return in_array($role, $ids_or_names);
     }
 
     /**
@@ -177,9 +179,11 @@ class Rap
             );
         }
 
+        $tbl = config('rap.tables');
+
         return $permission_model::select([
             'rap_permissions.*',
-            'rap_permission_role.created_at as pivot_created_at',
+            $tbl['permission_role'] . '.created_at as pivot_created_at',
             'rap_permission_role.updated_at as pivot_updated_at',
         ])
             ->join('rap_permission_role', 'rap_permission_role.permission_id', '=', 'rap_permissions.id')
@@ -199,7 +203,8 @@ class Rap
      */
     public function userPermissions()
     {
-        return $this->user->belongsToMany(config('rap.models.permission'))->withTimestamps();
+        return $this->user->belongsToMany(config('rap.models.permission'), config('rap.tables.permission_user'))
+            ->withTimestamps();
     }
 
     /**

@@ -45,7 +45,7 @@ class RapServiceProvider extends ServiceProvider
 
         $blade->directive('role', function ($expression)
         {
-            return "<?php if (Auth::check() && Auth::user()->is{$expression}): ?>";
+            return "<?php if (Auth::check() && Auth::user()->rap()->is{$expression}): ?>";
         });
 
         $blade->directive('endrole', function ()
@@ -55,7 +55,7 @@ class RapServiceProvider extends ServiceProvider
 
         $blade->directive('permission', function ($expression)
         {
-            return "<?php if (Auth::check() && Auth::user()->can{$expression}): ?>";
+            return "<?php if (Auth::check() && Auth::user()->rap()->can{$expression}): ?>";
         });
 
         $blade->directive('endpermission', function ()

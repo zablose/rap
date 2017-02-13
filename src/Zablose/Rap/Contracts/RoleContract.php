@@ -5,18 +5,18 @@ namespace Zablose\Rap\Contracts;
 interface RoleContract
 {
     /**
-     * Role belongs to many permissions.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function permissions();
-
-    /**
      * Role belongs to many users.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function users();
+
+    /**
+     * Role belongs to many permissions.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function permissions();
 
     /**
      * Attach permission to a role.

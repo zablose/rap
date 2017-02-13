@@ -3,15 +3,11 @@
 namespace Zablose\Rap\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Zablose\Rap\Contracts\PermissionContract;
-use Zablose\Rap\Traits\BelongsToManyRoles;
-use Zablose\Rap\Traits\BelongsToManyUsers;
 
 class Permission extends Model implements PermissionContract
 {
-    use BelongsToManyUsers;
-    use BelongsToManyRoles;
-
     /**
      * The attributes that are mass assignable.
      *
@@ -21,4 +17,26 @@ class Permission extends Model implements PermissionContract
         'name',
         'description',
     ];
+
+    /**
+     * Permission belongs to many users.
+     *
+     * @return BelongsToMany
+     */
+    public function users()
+    {
+        /** @var Model $this */
+        return $this->belongsToMany(config('auth.model'), config('rap.tables.permission_user'))->withTimestamps();
+    }
+
+    /**
+     * Permission belongs to many roles.
+     *
+     * @return BelongsToMany
+     */
+    public function roles()
+    {
+        /** @var Model $this */
+        return $this->belongsToMany(config('rap.models.role'), config('rap.tables.permission_role'))->withTimestamps();
+    }
 }
