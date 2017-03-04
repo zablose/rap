@@ -284,10 +284,12 @@ class Rap
      */
     public function hasPermission($permission)
     {
-        return $this->getPermissions()->contains(function ($key, $value) use ($permission)
+        $ids_or_names = $this->getPermissions()->map(function ($item) use ($permission)
         {
-            return $permission === $value->id;
-        });
+            return is_numeric($permission) ? $item->id : $item->name;
+        })->all();
+
+        return in_array($permission, $ids_or_names);
     }
 
     /**
