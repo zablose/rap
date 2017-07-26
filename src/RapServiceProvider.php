@@ -14,11 +14,11 @@ class RapServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__ . '/../../config/rap.php' => config_path('rap.php'),
+            __DIR__ . '/../config/rap.php' => config_path('rap.php'),
         ], 'config');
 
         $this->publishes([
-            __DIR__ . '/../../migrations/' => base_path('/database/migrations'),
+            __DIR__ . '/../migrations/' => base_path('/database/migrations'),
         ], 'migrations');
 
         $this->registerBladeExtensions();
@@ -31,7 +31,7 @@ class RapServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__ . '/../../config/rap.php', 'rap');
+        $this->mergeConfigFrom(__DIR__ . '/../config/rap.php', 'rap');
     }
 
     /**
