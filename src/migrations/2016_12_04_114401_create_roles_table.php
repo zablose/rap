@@ -15,7 +15,7 @@ class CreateRolesTable extends Migration
         Schema::create('rap_roles', function (Blueprint $table)
         {
             $table->unsignedTinyInteger('id', true);
-            $table->string('name')->unique();
+            $table->string('name', 191)->unique();
             $table->mediumText('description')->nullable();
             $table->timestamps();
             $table->softDeletes();

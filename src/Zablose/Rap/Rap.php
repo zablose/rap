@@ -57,7 +57,7 @@ class Rap
      * Check if the user has a role or roles.
      *
      * @param int|array $role
-     * @param bool $all
+     * @param bool      $all
      *
      * @return bool
      */
@@ -226,7 +226,7 @@ class Rap
      * Check if the user has a permission or permissions.
      *
      * @param int|array $permission
-     * @param bool $all
+     * @param bool      $all
      *
      * @return bool
      */
