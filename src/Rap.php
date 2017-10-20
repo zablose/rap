@@ -12,6 +12,7 @@ use Zablose\Rap\Contracts\PermissionContract;
 
 class Rap
 {
+
     /**
      * @var Model
      */
@@ -28,11 +29,24 @@ class Rap
     protected $permissions;
 
     /**
+     * @var array
+     */
+    protected $tables;
+
+    /**
+     * @var array
+     */
+    protected $models;
+
+    /**
      * @param Model $user
      */
     public function __construct(Model $user)
     {
         $this->user = $user;
+
+        $this->tables = config('rap.tables');
+        $this->models = config('rap.models');
     }
 
     /**
@@ -40,9 +54,34 @@ class Rap
      *
      * @return BelongsToMany
      */
+    public function userRoles()
+    {
+        /** @var Model $role */
+        $role = app($this->models['role']);
+
+        if (! $role instanceof Model)
+        {
+            throw new InvalidArgumentException(
+                '[rap.models.role] must be an instance of ' . Model::class
+            );
+        }
+
+        $tbl = $this->tables;
+
+        return $role::select([
+            $tbl['roles'] . '.id as id',
+            $tbl['roles'] . '.name as name',
+        ])
+            ->join($tbl['role_user'], $tbl['role_user'] . '.role_id', '=', $tbl['roles'] . '.id')
+            ->where($tbl['role_user'] . '.user_id', '=', $this->user->id);
+    }
+
+    /**
+     * @return BelongsToMany
+     */
     public function roles()
     {
-        return $this->user->belongsToMany(config('rap.models.role'), config('rap.tables.role_user'))->withTimestamps();
+        return $this->user->belongsToMany($this->models['role'], $this->tables['role_user'])->withTimestamps();
     }
 
     /**
@@ -50,7 +89,7 @@ class Rap
      */
     public function getRoles()
     {
-        return (! $this->roles) ? $this->roles = $this->roles()->get() : $this->roles;
+        return (! $this->roles) ? $this->roles = $this->userRoles()->get() : $this->roles;
     }
 
     /**
@@ -75,7 +114,7 @@ class Rap
      */
     public function isOne($role)
     {
-        foreach ($this->getArray($role) as $role)
+        foreach (self::asArray($role) as $role)
         {
             if ($this->hasRole($role))
             {
@@ -95,7 +134,7 @@ class Rap
      */
     public function isAll($role)
     {
-        foreach ($this->getArray($role) as $role)
+        foreach (self::asArray($role) as $role)
         {
             if (! $this->hasRole($role))
             {
@@ -132,7 +171,7 @@ class Rap
     {
         if (! $this->getRoles()->contains($role))
         {
-            $this->roles()->attach($role);
+            $this->userRoles()->attach($role);
         }
     }
 
@@ -145,9 +184,7 @@ class Rap
      */
     public function detachRole($role)
     {
-        $this->roles = null;
-
-        return $this->roles()->detach($role);
+        return $this->nullRoles()->userRoles()->detach($role);
     }
 
     /**
@@ -157,9 +194,7 @@ class Rap
      */
     public function detachAllRoles()
     {
-        $this->roles = null;
-
-        return $this->roles()->detach();
+        return $this->nullRoles()->userRoles()->detach();
     }
 
     /**
@@ -169,30 +204,27 @@ class Rap
      */
     public function rolePermissions()
     {
-        /** @var Model $permission_model */
-        $permission_model = app(config('rap.models.permission'));
+        /** @var Model $permission */
+        $permission = app($this->models['permission']);
 
-        if (! $permission_model instanceof Model)
+        if (! $permission instanceof Model)
         {
             throw new InvalidArgumentException(
                 '[rap.models.permission] must be an instance of ' . Model::class
             );
         }
 
-        $tbl = config('rap.tables');
+        $tbl = $this->tables;
 
-        return $permission_model::select([
-            'rap_permissions.*',
-            $tbl['permission_role'] . '.created_at as pivot_created_at',
-            'rap_permission_role.updated_at as pivot_updated_at',
+        return $permission::select([
+            $tbl['permissions'] . '.id as id',
+            $tbl['permissions'] . '.name as name',
         ])
-            ->join('rap_permission_role', 'rap_permission_role.permission_id', '=', 'rap_permissions.id')
-            ->join('rap_roles', 'rap_roles.id', '=', 'rap_permission_role.role_id')
-            ->whereIn('rap_roles.id', $this->getRoles()->pluck('id')->toArray())
+            ->join($tbl['permission_role'], $tbl['permission_role'] . '.permission_id', '=', $tbl['permissions'] . '.id')
+            ->join($tbl['roles'], $tbl['roles'] . '.id', '=', $tbl['permission_role'] . '.role_id')
+            ->whereIn($tbl['roles'] . '.id', $this->getRoles()->pluck('id')->toArray())
             ->groupBy([
-                'rap_permissions.id',
-                'pivot_created_at',
-                'pivot_updated_at',
+                $tbl['permissions'] . '.id',
             ]);
     }
 
@@ -203,7 +235,32 @@ class Rap
      */
     public function userPermissions()
     {
-        return $this->user->belongsToMany(config('rap.models.permission'), config('rap.tables.permission_user'))
+        /** @var Model $permission */
+        $permission = app($this->models['permission']);
+
+        if (! $permission instanceof Model)
+        {
+            throw new InvalidArgumentException(
+                '[rap.models.permission] must be an instance of ' . Model::class
+            );
+        }
+
+        $tbl = $this->tables;
+
+        return $permission::select([
+            $tbl['permissions'] . '.id as id',
+            $tbl['permissions'] . '.name as name',
+        ])
+            ->join($tbl['permission_user'], $tbl['permission_user'] . '.permission_id', '=', $tbl['permissions'] . '.id')
+            ->where($tbl['permission_user'] . '.id', '=', $this->user->id);
+    }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function permissions()
+    {
+        return $this->user->belongsToMany($this->models['permission'], $this->tables['permission_user'])
             ->withTimestamps();
     }
 
@@ -244,7 +301,7 @@ class Rap
      */
     public function canOne($permission)
     {
-        foreach ($this->getArray($permission) as $permission)
+        foreach (self::asArray($permission) as $permission)
         {
             if ($this->hasPermission($permission))
             {
@@ -264,7 +321,7 @@ class Rap
      */
     public function canAll($permission)
     {
-        foreach ($this->getArray($permission) as $permission)
+        foreach (self::asArray($permission) as $permission)
         {
             if (! $this->hasPermission($permission))
             {
@@ -314,9 +371,7 @@ class Rap
      */
     public function detachPermission($permission)
     {
-        $this->permissions = null;
-
-        return $this->userPermissions()->detach($permission);
+        return $this->nullPermissions()->userPermissions()->detach($permission);
     }
 
     /**
@@ -326,20 +381,38 @@ class Rap
      */
     public function detachAllPermissions()
     {
-        $this->permissions = null;
-
-        return $this->userPermissions()->detach();
+        return $this->nullPermissions()->userPermissions()->detach();
     }
 
     /**
-     * Get an array from argument.
+     * Make sure that argument represented as array.
      *
-     * @param mixed|array $argument
+     * @param array|string|int $argument
      *
      * @return array
      */
-    private function getArray($argument)
+    private static function asArray($argument)
     {
         return (! is_array($argument)) ? [$argument] : $argument;
+    }
+
+    /**
+     * @return $this
+     */
+    private function nullRoles()
+    {
+        $this->roles = null;
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    private function nullPermissions()
+    {
+        $this->permissions = null;
+
+        return $this;
     }
 }

@@ -2,10 +2,12 @@
 
 namespace Zablose\Rap\Traits;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Zablose\Rap\Rap;
 
 trait HasRap
 {
+
     /**
      * @var Rap
      */
@@ -25,7 +27,7 @@ trait HasRap
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function roles()
     {
@@ -33,10 +35,11 @@ trait HasRap
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function permissions()
     {
-        return $this->rap()->userPermissions();
+        return $this->rap()->permissions();
     }
+
 }

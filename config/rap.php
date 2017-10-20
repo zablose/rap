@@ -8,7 +8,9 @@ return [
     ],
 
     'tables' => [
-        'role_user' => 'rap_role_user',
+        'roles'           => 'rap_roles',
+        'permissions'     => 'rap_permissions',
+        'role_user'       => 'rap_role_user',
         'permission_user' => 'rap_permission_user',
         'permission_role' => 'rap_permission_role',
     ],
