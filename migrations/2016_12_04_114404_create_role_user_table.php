@@ -5,6 +5,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateRoleUserTable extends Migration
 {
+
     /**
      * Run the migrations.
      *
@@ -14,8 +15,11 @@ class CreateRoleUserTable extends Migration
     {
         Schema::create('rap_role_user', function (Blueprint $table)
         {
+            $table->charset   = 'utf8';
+            $table->collation = 'utf8_unicode_ci';
+
             $table->bigIncrements('id');
-            $table->unsignedTinyInteger('role_id')->index();
+            $table->unsignedInteger('role_id')->index();
             $table->unsignedInteger('user_id')->index();
             $table->timestamps();
 

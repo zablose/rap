@@ -5,6 +5,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateRolesTable extends Migration
 {
+
     /**
      * Run the migrations.
      *
@@ -14,11 +15,13 @@ class CreateRolesTable extends Migration
     {
         Schema::create('rap_roles', function (Blueprint $table)
         {
-            $table->unsignedTinyInteger('id', true);
-            $table->string('name', 191)->unique();
+            $table->charset   = 'utf8';
+            $table->collation = 'utf8_unicode_ci';
+
+            $table->increments('id');
+            $table->string('name', 60)->unique();
             $table->mediumText('description')->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -31,4 +34,5 @@ class CreateRolesTable extends Migration
     {
         Schema::drop('rap_roles');
     }
+
 }

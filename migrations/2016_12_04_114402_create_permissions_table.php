@@ -5,6 +5,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreatePermissionsTable extends Migration
 {
+
     /**
      * Run the migrations.
      *
@@ -14,11 +15,13 @@ class CreatePermissionsTable extends Migration
     {
         Schema::create('rap_permissions', function (Blueprint $table)
         {
-            $table->smallIncrements('id');
-            $table->string('name', 191)->unique();
+            $table->charset   = 'utf8';
+            $table->collation = 'utf8_unicode_ci';
+
+            $table->increments('id');
+            $table->string('name', 80)->unique();
             $table->mediumText('description')->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -31,4 +34,5 @@ class CreatePermissionsTable extends Migration
     {
         Schema::drop('rap_permissions');
     }
+
 }

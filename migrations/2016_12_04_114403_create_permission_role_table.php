@@ -5,6 +5,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreatePermissionRoleTable extends Migration
 {
+
     /**
      * Run the migrations.
      *
@@ -14,9 +15,12 @@ class CreatePermissionRoleTable extends Migration
     {
         Schema::create('rap_permission_role', function (Blueprint $table)
         {
-            $table->increments('id');
-            $table->unsignedTinyInteger('role_id')->index();
-            $table->unsignedSmallInteger('permission_id')->index();
+            $table->charset   = 'utf8';
+            $table->collation = 'utf8_unicode_ci';
+
+            $table->bigIncrements('id');
+            $table->unsignedInteger('role_id')->index();
+            $table->unsignedInteger('permission_id')->index();
             $table->timestamps();
 
             $table->foreign('role_id')->references('id')->on('rap_roles')->onDelete('cascade');
@@ -33,4 +37,5 @@ class CreatePermissionRoleTable extends Migration
     {
         Schema::drop('rap_permission_role');
     }
+
 }
