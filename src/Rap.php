@@ -166,13 +166,17 @@ class Rap
      * Attach role to a user.
      *
      * @param int|RoleContract $role
+     *
+     * @return $this
      */
     public function attachRole($role)
     {
         if (! $this->getRoles()->contains($role))
         {
-            $this->userRoles()->attach($role);
+            $this->roles()->attach($role);
         }
+
+        return $this;
     }
 
     /**
@@ -184,7 +188,7 @@ class Rap
      */
     public function detachRole($role)
     {
-        return $this->nullRoles()->userRoles()->detach($role);
+        return $this->nullRoles()->roles()->detach($role);
     }
 
     /**
@@ -194,7 +198,7 @@ class Rap
      */
     public function detachAllRoles()
     {
-        return $this->nullRoles()->userRoles()->detach();
+        return $this->nullRoles()->roles()->detach();
     }
 
     /**
@@ -353,13 +357,17 @@ class Rap
      * Attach permission to a user.
      *
      * @param int|PermissionContract $permission
+     *
+     * @return $this
      */
     public function attachPermission($permission)
     {
         if ((! $this->getPermissions()->contains($permission)))
         {
-            $this->userPermissions()->attach($permission);
+            $this->permissions()->attach($permission);
         }
+
+        return $this;
     }
 
     /**
@@ -371,7 +379,7 @@ class Rap
      */
     public function detachPermission($permission)
     {
-        return $this->nullPermissions()->userPermissions()->detach($permission);
+        return $this->nullPermissions()->permissions()->detach($permission);
     }
 
     /**
@@ -381,7 +389,7 @@ class Rap
      */
     public function detachAllPermissions()
     {
-        return $this->nullPermissions()->userPermissions()->detach();
+        return $this->nullPermissions()->permissions()->detach();
     }
 
     /**
