@@ -9,16 +9,8 @@ use Zablose\Rap\Exceptions\PermissionDeniedException;
 
 class VerifyPermission
 {
-    /**
-     * @var Guard
-     */
-    protected $auth;
+    protected Guard $auth;
 
-    /**
-     * Create a new filter instance.
-     *
-     * @param Guard $auth
-     */
     public function __construct(Guard $auth)
     {
         $this->auth = $auth;
@@ -27,18 +19,17 @@ class VerifyPermission
     /**
      * Handle an incoming request.
      *
-     * @param Request    $request
-     * @param \Closure   $next
-     * @param int|string $permission
+     * @param  Request  $request
+     * @param  Closure  $next
+     * @param  string   $permission
      *
      * @return mixed
      *
      * @throws PermissionDeniedException
      */
-    public function handle($request, Closure $next, $permission)
+    public function handle(Request $request, Closure $next, string $permission)
     {
-        if ($this->auth->check() && $this->auth->user()->rap()->can($permission))
-        {
+        if ($this->auth->check() && $this->auth->user()->rap()->can([$permission])) {
             return $next($request);
         }
 

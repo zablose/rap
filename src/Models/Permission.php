@@ -18,25 +18,13 @@ class Permission extends Model implements PermissionContract
         'description',
     ];
 
-    /**
-     * Permission belongs to many users.
-     *
-     * @return BelongsToMany
-     */
-    public function users()
+    public function users(): BelongsToMany
     {
-        /** @var Model $this */
         return $this->belongsToMany(config('auth.model'), config('rap.tables.permission_user'))->withTimestamps();
     }
 
-    /**
-     * Permission belongs to many roles.
-     *
-     * @return BelongsToMany
-     */
-    public function roles()
+    public function roles(): BelongsToMany
     {
-        /** @var Model $this */
         return $this->belongsToMany(config('rap.models.role'), config('rap.tables.permission_role'))->withTimestamps();
     }
 }

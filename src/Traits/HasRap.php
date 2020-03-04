@@ -7,39 +7,24 @@ use Zablose\Rap\Rap;
 
 trait HasRap
 {
+    protected ?Rap $rap = null;
 
-    /**
-     * @var Rap
-     */
-    protected $rap;
-
-    /**
-     * @return Rap
-     */
-    public function rap()
+    public function rap(): Rap
     {
-        if (! $this->rap instanceof Rap)
-        {
+        if (is_null($this->rap)) {
             $this->rap = new Rap($this);
         }
 
         return $this->rap;
     }
 
-    /**
-     * @return BelongsToMany
-     */
-    public function roles()
+    public function roles(): BelongsToMany
     {
         return $this->rap()->roles();
     }
 
-    /**
-     * @return BelongsToMany
-     */
-    public function permissions()
+    public function permissions(): BelongsToMany
     {
         return $this->rap()->permissions();
     }
-
 }

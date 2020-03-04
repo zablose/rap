@@ -6,40 +6,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 interface RoleContract
 {
-    /**
-     * Role belongs to many users.
-     *
-     * @return BelongsToMany
-     */
-    public function users();
+    public function users(): BelongsToMany;
 
-    /**
-     * Role belongs to many permissions.
-     *
-     * @return BelongsToMany
-     */
-    public function permissions();
+    public function permissions(): BelongsToMany;
 
-    /**
-     * Attach permission to a role.
-     *
-     * @param PermissionContract|int $permission
-     */
-    public function attachPermission($permission);
+    public function attachPermission(PermissionContract $permission): void;
 
-    /**
-     * Detach permission from a role.
-     *
-     * @param PermissionContract|int $permission
-     *
-     * @return int
-     */
-    public function detachPermission($permission);
+    public function detachPermission(PermissionContract $permission): int;
 
-    /**
-     * Detach all permissions.
-     *
-     * @return int
-     */
-    public function detachAllPermissions();
+    public function detachAllPermissions(): int;
 }

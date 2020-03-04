@@ -19,59 +19,30 @@ class Role extends Model implements RoleContract
         'description',
     ];
 
-    /**
-     * Permission belongs to many users.
-     *
-     * @return BelongsToMany
-     */
-    public function users()
+    public function users(): BelongsToMany
     {
-        /** @var Model $this */
         return $this->belongsToMany(config('auth.model'), config('rap.tables.role_user'))->withTimestamps();
     }
 
-    /**
-     * Role belongs to many permissions.
-     *
-     * @return BelongsToMany
-     */
-    public function permissions()
+    public function permissions(): BelongsToMany
     {
-        /** @var Model $this */
-        return $this->belongsToMany(config('rap.models.permission'), config('rap.tables.permission_role'))->withTimestamps();
+        return $this->belongsToMany(config('rap.models.permission'),
+            config('rap.tables.permission_role'))->withTimestamps();
     }
 
-    /**
-     * Attach permission to a role.
-     *
-     * @param PermissionContract|int $permission
-     */
-    public function attachPermission($permission)
+    public function attachPermission(PermissionContract $permission): void
     {
-        if (! $this->permissions()->get()->contains($permission))
-        {
+        if (! $this->permissions()->get()->contains($permission)) {
             $this->permissions()->attach($permission);
         }
     }
 
-    /**
-     * Detach permission from a role.
-     *
-     * @param PermissionContract|int $permission
-     *
-     * @return int
-     */
-    public function detachPermission($permission)
+    public function detachPermission(PermissionContract $permission): int
     {
         return $this->permissions()->detach($permission);
     }
 
-    /**
-     * Detach all permissions.
-     *
-     * @return int
-     */
-    public function detachAllPermissions()
+    public function detachAllPermissions(): int
     {
         return $this->permissions()->detach();
     }

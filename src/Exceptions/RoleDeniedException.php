@@ -4,13 +4,8 @@ namespace Zablose\Rap\Exceptions;
 
 class RoleDeniedException extends AccessDeniedException
 {
-    /**
-     * Create a new role denied exception instance.
-     *
-     * @param string $role
-     */
-    public function __construct($role)
+    public function __construct(string $role)
     {
-        $this->message = sprintf("You don't have a required ['%s'] role.", $role);
+        parent::__construct(sprintf("You don't have a required ['%s'] role.", $role));
     }
 }

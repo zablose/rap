@@ -9,16 +9,8 @@ use Zablose\Rap\Exceptions\RoleDeniedException;
 
 class VerifyRole
 {
-    /**
-     * @var Guard
-     */
-    protected $auth;
+    protected Guard $auth;
 
-    /**
-     * Create a new filter instance.
-     *
-     * @param Guard $auth
-     */
     public function __construct(Guard $auth)
     {
         $this->auth = $auth;
@@ -27,18 +19,17 @@ class VerifyRole
     /**
      * Handle an incoming request.
      *
-     * @param Request    $request
-     * @param Closure    $next
-     * @param int|string $role
+     * @param  Request  $request
+     * @param  Closure  $next
+     * @param  string   $role
      *
      * @return mixed
      *
      * @throws RoleDeniedException
      */
-    public function handle($request, Closure $next, $role)
+    public function handle(Request $request, Closure $next, string $role)
     {
-        if ($this->auth->check() && $this->auth->user()->rap()->is($role))
-        {
+        if ($this->auth->check() && $this->auth->user()->rap()->is([$role])) {
             return $next($request);
         }
 

@@ -6,40 +6,25 @@ use Illuminate\Support\ServiceProvider;
 
 class RapServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
+    public function boot(): void
     {
         $this->publishes([
-            __DIR__ . '/../config/rap.php' => config_path('rap.php'),
+            __DIR__.'/../config/rap.php' => config_path('rap.php'),
         ], 'config');
 
         $this->publishes([
-            __DIR__ . '/../migrations/' => base_path('/database/migrations'),
+            __DIR__.'/../migrations/' => base_path('/database/migrations'),
         ], 'migrations');
 
         $this->registerBladeExtensions();
     }
 
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
+    public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/rap.php', 'rap');
+        $this->mergeConfigFrom(__DIR__.'/../config/rap.php', 'rap');
     }
 
-    /**
-     * Register Blade extensions.
-     *
-     * @return void
-     */
-    protected function registerBladeExtensions()
+    protected function registerBladeExtensions(): void
     {
         $blade = $this->app['view']->getEngineResolver()->resolve('blade')->getCompiler();
 

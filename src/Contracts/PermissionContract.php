@@ -2,19 +2,11 @@
 
 namespace Zablose\Rap\Contracts;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+
 interface PermissionContract
 {
-    /**
-     * Permission belongs to many users.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function users();
+    public function users(): BelongsToMany;
 
-    /**
-     * Permission belongs to many roles.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function roles();
+    public function roles(): BelongsToMany;
 }
