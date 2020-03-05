@@ -2,6 +2,7 @@
 
 namespace Zablose\Rap;
 
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
 class RapServiceProvider extends ServiceProvider
@@ -26,7 +27,8 @@ class RapServiceProvider extends ServiceProvider
 
     protected function registerBladeExtensions(): void
     {
-        $blade = $this->app['view']->getEngineResolver()->resolve('blade')->getCompiler();
+        /** @var Blade $blade */
+        $blade = resolve('view')->getEngineResolver()->resolve('blade')->getCompiler();
 
         $blade->directive('role', function ($expression)
         {
