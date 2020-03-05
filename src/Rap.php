@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Zablose\Rap;
 
@@ -70,7 +70,7 @@ class Rap
 
     public function hasRole(string $role): bool
     {
-        return in_array($role, $this->getRoles()->pluck('name')->toArray());
+        return $this->getRoles()->containsStrict('name', $role);
     }
 
     public function attachRole(RoleContract $role): self
@@ -166,7 +166,7 @@ class Rap
 
     public function hasPermission(string $permission): bool
     {
-        return in_array($permission, $this->getPermissions()->pluck('name')->toArray());
+        return $this->getPermissions()->containsStrict('name', $permission);
     }
 
     public function attachPermission(PermissionContract $permission): self
