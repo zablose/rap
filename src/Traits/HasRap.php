@@ -2,7 +2,6 @@
 
 namespace Zablose\Rap\Traits;
 
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Zablose\Rap\Rap;
 
 trait HasRap
@@ -16,15 +15,5 @@ trait HasRap
         }
 
         return $this->rap;
-    }
-
-    public function roles(): BelongsToMany
-    {
-        return $this->rap()->roles();
-    }
-
-    public function permissions(): BelongsToMany
-    {
-        return $this->rap()->permissions();
     }
 }

@@ -19,6 +19,12 @@ class Role extends Model implements RoleContract
         'description',
     ];
 
+    public function __construct(array $attributes = []) {
+        parent::__construct($attributes);
+
+        $this->setTable(config('rap.tables.roles'));
+    }
+
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(config('auth.model'), config('rap.tables.role_user'))->withTimestamps();

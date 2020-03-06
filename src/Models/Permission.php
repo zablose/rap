@@ -18,6 +18,12 @@ class Permission extends Model implements PermissionContract
         'description',
     ];
 
+    public function __construct(array $attributes = []) {
+        parent::__construct($attributes);
+
+        $this->setTable(config('rap.tables.permissions'));
+    }
+
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(config('auth.model'), config('rap.tables.permission_user'))->withTimestamps();
