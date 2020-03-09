@@ -27,7 +27,7 @@ class Role extends Model implements RoleContract
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(config('auth.model'), config('rap.tables.role_user'))->withTimestamps();
+        return $this->belongsToMany(config('rap.models.user'), config('rap.tables.role_user'))->withTimestamps();
     }
 
     public function permissions(): BelongsToMany

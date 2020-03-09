@@ -22,29 +22,23 @@ class Rap
     {
         $this->user = $user;
 
-        $this->tables = config('rap.tables');
-        $this->models = config('rap.models');
+        $config = config('rap');
+
+        $this->tables = $config['tables'];
+        $this->models = $config['models'];
     }
 
     public function userRoles(): Builder
     {
-        /** @var Model $role */
-        $role = app($this->models['role']);
+        $roles     = $this->tables['roles'];
+        $role_user = $this->tables['role_user'];
 
-        if (! $role instanceof Model) {
-            throw new InvalidArgumentException(
-                '[rap.models.role] must be an instance of '.Model::class
-            );
-        }
-
-        $tbl = $this->tables;
-
-        return $role::select([
-            $tbl['roles'].'.id as id',
-            $tbl['roles'].'.name as name',
+        return $this->models['role']::select([
+            $roles.'.id as id',
+            $roles.'.name as name',
         ])
-            ->join($tbl['role_user'], $tbl['role_user'].'.role_id', '=', $tbl['roles'].'.id')
-            ->where($tbl['role_user'].'.user_id', '=', $this->user->id);
+            ->join($role_user, $role_user.'.role_id', '=', $roles.'.id')
+            ->where($role_user.'.user_id', '=', $this->user->id);
     }
 
     public function roles(): BelongsToMany
@@ -94,48 +88,33 @@ class Rap
 
     public function rolePermissions(): Builder
     {
-        /** @var Model $permission */
-        $permission = app($this->models['permission']);
+        $roles           = $this->tables['roles'];
+        $permissions     = $this->tables['permissions'];
+        $permission_role = $this->tables['permission_role'];
 
-        if (! $permission instanceof Model) {
-            throw new InvalidArgumentException(
-                '[rap.models.permission] must be an instance of '.Model::class
-            );
-        }
-
-        $tbl = $this->tables;
-
-        return $permission::select([
-            $tbl['permissions'].'.id as id',
-            $tbl['permissions'].'.name as name',
+        return $this->models['permission']::select([
+            $permissions.'.id as id',
+            $permissions.'.name as name',
         ])
-            ->join($tbl['permission_role'], $tbl['permission_role'].'.permission_id', '=', $tbl['permissions'].'.id')
-            ->join($tbl['roles'], $tbl['roles'].'.id', '=', $tbl['permission_role'].'.role_id')
-            ->whereIn($tbl['roles'].'.id', $this->getRoles()->pluck('id')->toArray())
+            ->join($permission_role, $permission_role.'.permission_id', '=', $permissions.'.id')
+            ->join($roles, $roles.'.id', '=', $permission_role.'.role_id')
+            ->whereIn($roles.'.id', $this->getRoles()->pluck('id')->toArray())
             ->groupBy([
-                $tbl['permissions'].'.id',
+                $permissions.'.id',
             ]);
     }
 
     public function userPermissions(): Builder
     {
-        /** @var Model $permission */
-        $permission = app($this->models['permission']);
+        $permissions     = $this->tables['permissions'];
+        $permission_user = $this->tables['permission_user'];
 
-        if (! $permission instanceof Model) {
-            throw new InvalidArgumentException(
-                '[rap.models.permission] must be an instance of '.Model::class
-            );
-        }
-
-        $tbl = $this->tables;
-
-        return $permission::select([
-            $tbl['permissions'].'.id as id',
-            $tbl['permissions'].'.name as name',
+        return $this->models['permission']::select([
+            $permissions.'.id as id',
+            $permissions.'.name as name',
         ])
-            ->join($tbl['permission_user'], $tbl['permission_user'].'.permission_id', '=', $tbl['permissions'].'.id')
-            ->where($tbl['permission_user'].'.id', '=', $this->user->id);
+            ->join($permission_user, $permission_user.'.permission_id', '=', $permissions.'.id')
+            ->where($permission_user.'.id', '=', $this->user->id);
     }
 
     public function permissions(): BelongsToMany

@@ -3,7 +3,7 @@
 return [
 
     'models' => [
-        'user' => \App\User::class,
+        'user' => \App\Models\User::class,
         'role' => Zablose\Rap\Models\Role::class,
         'permission' => Zablose\Rap\Models\Permission::class,
     ],

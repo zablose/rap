@@ -13,9 +13,9 @@ abstract class TestCase extends BaseTestCase
     use CreatesApplication;
     use DatabaseMigrations;
 
-    protected function createUser(): User
+    protected function createUser(array $attributes = []): User
     {
-        return factory(User::class)->create();
+        return factory(User::class)->create($attributes);
     }
 
     protected function createRole(string $name, string $description): Role
