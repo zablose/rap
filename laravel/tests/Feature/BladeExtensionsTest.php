@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Tests\Feature;
 
@@ -7,7 +7,7 @@ use Tests\TestCase;
 class BladeExtensionsTest extends TestCase
 {
     /** @test */
-    public function user_with_role_can_see_content()
+    public function user_with_role_can_see_content(): void
     {
         $user = $this->createUser();
 
@@ -24,7 +24,7 @@ class BladeExtensionsTest extends TestCase
     }
 
     /** @test */
-    public function user_with_permission_can_see_content()
+    public function user_with_permission_can_see_content(): void
     {
         $user = $this->createUser();
 

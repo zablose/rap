@@ -19,7 +19,8 @@ class Role extends Model implements RoleContract
         'description',
     ];
 
-    public function __construct(array $attributes = []) {
+    public function __construct(array $attributes = [])
+    {
         parent::__construct($attributes);
 
         $this->setTable(config('rap.tables.roles'));
@@ -36,20 +37,26 @@ class Role extends Model implements RoleContract
             config('rap.tables.permission_role'))->withTimestamps();
     }
 
-    public function attachPermission(PermissionContract $permission): void
+    public function attachPermission(PermissionContract $permission): self
     {
         if (! $this->permissions()->get()->contains($permission)) {
             $this->permissions()->attach($permission);
         }
+
+        return $this;
     }
 
-    public function detachPermission(PermissionContract $permission): int
+    public function detachPermission(PermissionContract $permission): self
     {
-        return $this->permissions()->detach($permission);
+        $this->permissions()->detach($permission);
+
+        return $this;
     }
 
-    public function detachAllPermissions(): int
+    public function detachAllPermissions(): self
     {
-        return $this->permissions()->detach();
+        $this->permissions()->detach();
+
+        return $this;
     }
 }

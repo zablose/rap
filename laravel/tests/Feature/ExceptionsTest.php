@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Tests\Feature;
 
@@ -9,7 +9,7 @@ use Zablose\Rap\Exceptions\RoleDeniedException;
 class ExceptionsTest extends TestCase
 {
     /** @test */
-    public function throw_role_denied_exception()
+    public function throw_role_denied_exception(): void
     {
         $this->withoutExceptionHandling();
 
@@ -19,7 +19,7 @@ class ExceptionsTest extends TestCase
     }
 
     /** @test */
-    public function throw_permission_denied_exception()
+    public function throw_permission_denied_exception(): void
     {
         $this->withoutExceptionHandling();
 

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Tests\Feature;
 
@@ -49,17 +49,15 @@ class RapTest extends TestCase
     }
 
     /** @test */
-    public function detach_all_roles_from_a_user()
+    public function detach_all_roles_from_a_user(): void
     {
         $user = $this->createUser();
 
         $this->assertTrue($user->rap()->roles()->get()->count() === 0);
 
-        $role_user  = $this->createRole('user', 'User');
-        $role_admin = $this->createRole('admin', 'Admin');
-
-        $user->rap()->attachRole($role_user);
-        $user->rap()->attachRole($role_admin);
+        $user->rap()
+            ->attachRole($this->createRole('user', 'User'))
+            ->attachRole($this->createRole('admin', 'Admin'));
 
         $this->assertTrue($user->rap()->roles()->get()->count() === 2);
 
@@ -69,17 +67,15 @@ class RapTest extends TestCase
     }
 
     /** @test */
-    public function detach_all_permissions_from_a_user()
+    public function detach_all_permissions_from_a_user(): void
     {
         $user = $this->createUser();
 
         $this->assertTrue($user->rap()->permissions()->get()->count() === 0);
 
-        $create = $this->createPermission('create', 'Create');
-        $update = $this->createPermission('update', 'Update');
-
-        $user->rap()->attachPermission($create);
-        $user->rap()->attachPermission($update);
+        $user->rap()
+            ->attachPermission($this->createPermission('create', 'Create'))
+            ->attachPermission($this->createPermission('update', 'Update'));
 
         $this->assertTrue($user->rap()->permissions()->get()->count() === 2);
 

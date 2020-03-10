@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Tests\Feature\Models;
 
@@ -7,7 +7,7 @@ use Tests\TestCase;
 class RoleTest extends TestCase
 {
     /** @test */
-    public function get_users_by_role()
+    public function get_users_by_role(): void
     {
         $sergejs = $this->createUser();
         $jane    = $this->createUser();
@@ -25,15 +25,14 @@ class RoleTest extends TestCase
     }
 
     /** @test */
-    public function get_permissions_by_role()
+    public function get_permissions_by_role(): void
     {
         $role = $this->createRole('user', 'User');
 
         $create = $this->createPermission('create', 'Create');
         $update = $this->createPermission('update', 'Update');
 
-        $role->attachPermission($create);
-        $role->attachPermission($update);
+        $role->attachPermission($create)->attachPermission($update);
 
         $permissions = $role->permissions()->get();
 
@@ -43,7 +42,7 @@ class RoleTest extends TestCase
     }
 
     /** @test */
-    public function detach_permission_from_a_role()
+    public function detach_permission_from_a_role(): void
     {
         $role = $this->createRole('user', 'User');
 
@@ -61,7 +60,7 @@ class RoleTest extends TestCase
     }
 
     /** @test */
-    public function detach_all_permissions_from_a_role()
+    public function detach_all_permissions_from_a_role(): void
     {
         $role = $this->createRole('user', 'User');
 
@@ -70,8 +69,7 @@ class RoleTest extends TestCase
         $create = $this->createPermission('create', 'Create');
         $update = $this->createPermission('update', 'Update');
 
-        $role->attachPermission($create);
-        $role->attachPermission($update);
+        $role->attachPermission($create)->attachPermission($update);
 
         $this->assertTrue($role->permissions()->get()->count() === 2);
 

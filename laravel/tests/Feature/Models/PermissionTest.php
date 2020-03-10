@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Tests\Feature\Models;
 
@@ -7,7 +7,7 @@ use Tests\TestCase;
 class PermissionTest extends TestCase
 {
     /** @test */
-    public function get_users_by_permission()
+    public function get_users_by_permission(): void
     {
         $sergejs = $this->createUser();
         $jane    = $this->createUser();
@@ -25,7 +25,7 @@ class PermissionTest extends TestCase
     }
 
     /** @test */
-    public function get_roles_by_permission()
+    public function get_roles_by_permission(): void
     {
         $role_user  = $this->createRole('user', 'User');
         $role_admin = $this->createRole('admin', 'Admin');

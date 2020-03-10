@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Model;
-use InvalidArgumentException;
 use Zablose\Rap\Contracts\RoleContract;
 use Zablose\Rap\Contracts\PermissionContract;
 
@@ -76,14 +75,18 @@ class Rap
         return $this;
     }
 
-    public function detachRole(RoleContract $role): int
+    public function detachRole(RoleContract $role): self
     {
-        return $this->nullRoles()->roles()->detach($role);
+        $this->nullRoles()->roles()->detach($role);
+
+        return $this;
     }
 
-    public function detachAllRoles(): int
+    public function detachAllRoles(): self
     {
-        return $this->nullRoles()->roles()->detach();
+        $this->nullRoles()->roles()->detach();
+
+        return $this;
     }
 
     public function rolePermissions(): Builder
@@ -157,14 +160,18 @@ class Rap
         return $this;
     }
 
-    public function detachPermission(PermissionContract $permission): int
+    public function detachPermission(PermissionContract $permission): self
     {
-        return $this->nullPermissions()->permissions()->detach($permission);
+        $this->nullPermissions()->permissions()->detach($permission);
+
+        return $this;
     }
 
-    public function detachAllPermissions(): int
+    public function detachAllPermissions(): self
     {
-        return $this->nullPermissions()->permissions()->detach();
+        $this->nullPermissions()->permissions()->detach();
+
+        return $this;
     }
 
     private function nullRoles(): self

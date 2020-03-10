@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Tests\Feature;
 
@@ -7,7 +7,7 @@ use Tests\TestCase;
 class MiddlewareTest extends TestCase
 {
     /** @test */
-    public function user_with_role_can_access_route()
+    public function user_with_role_can_access_route(): void
     {
         $user = $this->createUser();
 
@@ -23,7 +23,7 @@ class MiddlewareTest extends TestCase
     }
 
     /** @test */
-    public function user_with_permission_can_access_route()
+    public function user_with_permission_can_access_route(): void
     {
         $user = $this->createUser();
 
