@@ -8,6 +8,9 @@ use Zablose\Rap\Contracts\PermissionContract;
 
 class Permission extends Model implements PermissionContract
 {
+    protected array $rap_models;
+    protected array $rap_tables;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -22,16 +25,21 @@ class Permission extends Model implements PermissionContract
     {
         parent::__construct($attributes);
 
-        $this->setTable(config('rap.tables.permissions'));
+        $config = config('rap');
+
+        $this->rap_models = $config['models'];
+        $this->rap_tables = $config['tables'];
+
+        $this->setTable($this->rap_tables['permissions']);
     }
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(config('rap.models.user'), config('rap.tables.permission_user'))->withTimestamps();
+        return $this->belongsToMany($this->rap_models['user'], $this->rap_tables['permission_user'])->withTimestamps();
     }
 
     public function roles(): BelongsToMany
     {
-        return $this->belongsToMany(config('rap.models.role'), config('rap.tables.permission_role'))->withTimestamps();
+        return $this->belongsToMany($this->rap_models['role'], $this->rap_tables['permission_role'])->withTimestamps();
     }
 }

@@ -9,6 +9,9 @@ use Zablose\Rap\Contracts\RoleContract;
 
 class Role extends Model implements RoleContract
 {
+    protected array $rap_models;
+    protected array $rap_tables;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -23,18 +26,23 @@ class Role extends Model implements RoleContract
     {
         parent::__construct($attributes);
 
-        $this->setTable(config('rap.tables.roles'));
+        $config = config('rap');
+
+        $this->rap_models = $config['models'];
+        $this->rap_tables = $config['tables'];
+
+        $this->setTable($this->rap_tables['roles']);
     }
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(config('rap.models.user'), config('rap.tables.role_user'))->withTimestamps();
+        return $this->belongsToMany($this->rap_models['user'], $this->rap_tables['role_user'])->withTimestamps();
     }
 
     public function permissions(): BelongsToMany
     {
-        return $this->belongsToMany(config('rap.models.permission'),
-            config('rap.tables.permission_role'))->withTimestamps();
+        return $this->belongsToMany($this->rap_models['permission'], $this->rap_tables['permission_role'])
+            ->withTimestamps();
     }
 
     public function attachPermission(PermissionContract $permission): self
