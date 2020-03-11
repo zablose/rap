@@ -5,14 +5,14 @@
          colors="true">
     <testsuites>
         <testsuite name="Feature">
-            <directory suffix="Test.php">./tests/Feature</directory>
+            <directory>./laravel/tests/Feature</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist>
-            <directory suffix=".php">../src</directory>
+            <directory suffix=".php">./src</directory>
             <exclude>
-                <file>../src/RapServiceProvider.php</file>
+                <file>./src/RapServiceProvider.php</file>
             </exclude>
         </whitelist>
     </filter>
@@ -28,6 +28,6 @@
     </php>
     <logging>
         <log type="coverage-text" target="php://stdout" showUncoveredFiles="true"/>
-        <log type="coverage-html" target="../coverage-report/"/>
+        <log type="coverage-html" target="./coverage-report/"/>
     </logging>
 </phpunit>
