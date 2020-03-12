@@ -1,5 +1,7 @@
 # RaP - Roles and Permissions
 
+[![Build Status](https://travis-ci.org/zablose/rap.svg?branch=dev)](https://travis-ci.org/zablose/rap)
+
 ## Publish
 
     php artisan vendor:publish --provider="Zablose\Rap\RapServiceProvider" --tag=config
