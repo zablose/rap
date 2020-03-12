@@ -2,6 +2,7 @@
 
 namespace Zablose\Rap;
 
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
 class RapServiceProvider extends ServiceProvider
@@ -26,11 +27,12 @@ class RapServiceProvider extends ServiceProvider
 
     protected function registerBladeExtensions(): void
     {
-        $blade = $this->app['view']->getEngineResolver()->resolve('blade')->getCompiler();
+        /** @var Blade $blade */
+        $blade = resolve('view')->getEngineResolver()->resolve('blade')->getCompiler();
 
-        $blade->directive('role', function ($expression)
+        $blade->directive('role', function ($roles)
         {
-            return "<?php if (Auth::check() && Auth::user()->rap()->is{$expression}): ?>";
+            return "<?php if (Auth::check() && Auth::user()->rap()->is({$roles})): ?>";
         });
 
         $blade->directive('endrole', function ()
@@ -38,9 +40,9 @@ class RapServiceProvider extends ServiceProvider
             return "<?php endif; ?>";
         });
 
-        $blade->directive('permission', function ($expression)
+        $blade->directive('permission', function ($permissions)
         {
-            return "<?php if (Auth::check() && Auth::user()->rap()->can{$expression}): ?>";
+            return "<?php if (Auth::check() && Auth::user()->rap()->can({$permissions})): ?>";
         });
 
         $blade->directive('endpermission', function ()

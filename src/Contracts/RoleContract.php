@@ -10,9 +10,9 @@ interface RoleContract
 
     public function permissions(): BelongsToMany;
 
-    public function attachPermission(PermissionContract $permission): void;
+    public function attachPermission(PermissionContract $permission): self;
 
-    public function detachPermission(PermissionContract $permission): int;
+    public function detachPermission(PermissionContract $permission): self;
 
-    public function detachAllPermissions(): int;
+    public function detachAllPermissions(): self;
 }

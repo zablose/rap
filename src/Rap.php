@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Model;
-use InvalidArgumentException;
 use Zablose\Rap\Contracts\RoleContract;
 use Zablose\Rap\Contracts\PermissionContract;
 
@@ -22,29 +21,23 @@ class Rap
     {
         $this->user = $user;
 
-        $this->tables = config('rap.tables');
-        $this->models = config('rap.models');
+        $config = config('rap');
+
+        $this->tables = $config['tables'];
+        $this->models = $config['models'];
     }
 
     public function userRoles(): Builder
     {
-        /** @var Model $role */
-        $role = app($this->models['role']);
+        $roles     = $this->tables['roles'];
+        $role_user = $this->tables['role_user'];
 
-        if (! $role instanceof Model) {
-            throw new InvalidArgumentException(
-                '[rap.models.role] must be an instance of '.Model::class
-            );
-        }
-
-        $tbl = $this->tables;
-
-        return $role::select([
-            $tbl['roles'].'.id as id',
-            $tbl['roles'].'.name as name',
+        return $this->models['role']::select([
+            $roles.'.id as id',
+            $roles.'.name as name',
         ])
-            ->join($tbl['role_user'], $tbl['role_user'].'.role_id', '=', $tbl['roles'].'.id')
-            ->where($tbl['role_user'].'.user_id', '=', $this->user->id);
+            ->join($role_user, $role_user.'.role_id', '=', $roles.'.id')
+            ->where($role_user.'.user_id', '=', $this->user->id);
     }
 
     public function roles(): BelongsToMany
@@ -82,60 +75,49 @@ class Rap
         return $this;
     }
 
-    public function detachRole(RoleContract $role): int
+    public function detachRole(RoleContract $role): self
     {
-        return $this->nullRoles()->roles()->detach($role);
+        $this->nullRoles()->roles()->detach($role);
+
+        return $this;
     }
 
-    public function detachAllRoles(): int
+    public function detachAllRoles(): self
     {
-        return $this->nullRoles()->roles()->detach();
+        $this->nullRoles()->roles()->detach();
+
+        return $this;
     }
 
     public function rolePermissions(): Builder
     {
-        /** @var Model $permission */
-        $permission = app($this->models['permission']);
+        $roles           = $this->tables['roles'];
+        $permissions     = $this->tables['permissions'];
+        $permission_role = $this->tables['permission_role'];
 
-        if (! $permission instanceof Model) {
-            throw new InvalidArgumentException(
-                '[rap.models.permission] must be an instance of '.Model::class
-            );
-        }
-
-        $tbl = $this->tables;
-
-        return $permission::select([
-            $tbl['permissions'].'.id as id',
-            $tbl['permissions'].'.name as name',
+        return $this->models['permission']::select([
+            $permissions.'.id as id',
+            $permissions.'.name as name',
         ])
-            ->join($tbl['permission_role'], $tbl['permission_role'].'.permission_id', '=', $tbl['permissions'].'.id')
-            ->join($tbl['roles'], $tbl['roles'].'.id', '=', $tbl['permission_role'].'.role_id')
-            ->whereIn($tbl['roles'].'.id', $this->getRoles()->pluck('id')->toArray())
+            ->join($permission_role, $permission_role.'.permission_id', '=', $permissions.'.id')
+            ->join($roles, $roles.'.id', '=', $permission_role.'.role_id')
+            ->whereIn($roles.'.id', $this->getRoles()->pluck('id')->toArray())
             ->groupBy([
-                $tbl['permissions'].'.id',
+                $permissions.'.id',
             ]);
     }
 
     public function userPermissions(): Builder
     {
-        /** @var Model $permission */
-        $permission = app($this->models['permission']);
+        $permissions     = $this->tables['permissions'];
+        $permission_user = $this->tables['permission_user'];
 
-        if (! $permission instanceof Model) {
-            throw new InvalidArgumentException(
-                '[rap.models.permission] must be an instance of '.Model::class
-            );
-        }
-
-        $tbl = $this->tables;
-
-        return $permission::select([
-            $tbl['permissions'].'.id as id',
-            $tbl['permissions'].'.name as name',
+        return $this->models['permission']::select([
+            $permissions.'.id as id',
+            $permissions.'.name as name',
         ])
-            ->join($tbl['permission_user'], $tbl['permission_user'].'.permission_id', '=', $tbl['permissions'].'.id')
-            ->where($tbl['permission_user'].'.id', '=', $this->user->id);
+            ->join($permission_user, $permission_user.'.permission_id', '=', $permissions.'.id')
+            ->where($permission_user.'.id', '=', $this->user->id);
     }
 
     public function permissions(): BelongsToMany
@@ -178,14 +160,18 @@ class Rap
         return $this;
     }
 
-    public function detachPermission(PermissionContract $permission): int
+    public function detachPermission(PermissionContract $permission): self
     {
-        return $this->nullPermissions()->permissions()->detach($permission);
+        $this->nullPermissions()->permissions()->detach($permission);
+
+        return $this;
     }
 
-    public function detachAllPermissions(): int
+    public function detachAllPermissions(): self
     {
-        return $this->nullPermissions()->permissions()->detach();
+        $this->nullPermissions()->permissions()->detach();
+
+        return $this;
     }
 
     private function nullRoles(): self
