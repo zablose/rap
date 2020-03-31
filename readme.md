@@ -1,6 +1,6 @@
 # RaP - Roles and Permissions
 
-[![Build Status](https://travis-ci.org/zablose/rap.svg?branch=dev)](https://travis-ci.org/zablose/rap)
+[![Build Status](https://travis-ci.org/zablose/rap.svg?branch=master)](https://travis-ci.org/zablose/rap)
 
 ## Publish
 
