@@ -15,7 +15,7 @@ abstract class TestCase extends BaseTestCase
 
     protected function createUser(array $attributes = []): User
     {
-        return factory(User::class)->create($attributes);
+        return User::factory()->create($attributes);
     }
 
     protected function createRole(string $name, string $description): Role
