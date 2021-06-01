@@ -8,6 +8,13 @@ use Tests\TestCase;
 
 class BladeExtensionsTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->artisan('view:clear');
+    }
+
     /** @test */
     public function user_with_role_can_see_content(): void
     {
