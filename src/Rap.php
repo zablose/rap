@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Zablose\Rap;
 
@@ -29,13 +31,15 @@ class Rap
 
     public function userRoles(): Builder
     {
-        $roles     = $this->tables['roles'];
+        $roles = $this->tables['roles'];
         $role_user = $this->tables['role_user'];
 
-        return $this->models['role']::select([
-            $roles.'.id as id',
-            $roles.'.name as name',
-        ])
+        return $this->models['role']::select(
+            [
+                $roles.'.id as id',
+                $roles.'.name as name',
+            ]
+        )
             ->join($role_user, $role_user.'.role_id', '=', $roles.'.id')
             ->where($role_user.'.user_id', '=', $this->user->id);
     }
@@ -91,31 +95,37 @@ class Rap
 
     public function rolePermissions(): Builder
     {
-        $roles           = $this->tables['roles'];
-        $permissions     = $this->tables['permissions'];
+        $roles = $this->tables['roles'];
+        $permissions = $this->tables['permissions'];
         $permission_role = $this->tables['permission_role'];
 
-        return $this->models['permission']::select([
-            $permissions.'.id as id',
-            $permissions.'.name as name',
-        ])
+        return $this->models['permission']::select(
+            [
+                $permissions.'.id as id',
+                $permissions.'.name as name',
+            ]
+        )
             ->join($permission_role, $permission_role.'.permission_id', '=', $permissions.'.id')
             ->join($roles, $roles.'.id', '=', $permission_role.'.role_id')
             ->whereIn($roles.'.id', $this->getRoles()->pluck('id')->toArray())
-            ->groupBy([
-                $permissions.'.id',
-            ]);
+            ->groupBy(
+                [
+                    $permissions.'.id',
+                ]
+            );
     }
 
     public function userPermissions(): Builder
     {
-        $permissions     = $this->tables['permissions'];
+        $permissions = $this->tables['permissions'];
         $permission_user = $this->tables['permission_user'];
 
-        return $this->models['permission']::select([
-            $permissions.'.id as id',
-            $permissions.'.name as name',
-        ])
+        return $this->models['permission']::select(
+            [
+                $permissions.'.id as id',
+                $permissions.'.name as name',
+            ]
+        )
             ->join($permission_user, $permission_user.'.permission_id', '=', $permissions.'.id')
             ->where($permission_user.'.id', '=', $this->user->id);
     }

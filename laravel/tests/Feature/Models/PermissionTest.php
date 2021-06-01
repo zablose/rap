@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Feature\Models;
 
@@ -10,7 +12,7 @@ class PermissionTest extends TestCase
     public function get_users_by_permission(): void
     {
         $sergejs = $this->createUser();
-        $jane    = $this->createUser();
+        $jane = $this->createUser();
 
         $permission = $this->createPermission('update', 'Update');
 
@@ -27,7 +29,7 @@ class PermissionTest extends TestCase
     /** @test */
     public function get_roles_by_permission(): void
     {
-        $role_user  = $this->createRole('user', 'User');
+        $role_user = $this->createRole('user', 'User');
         $role_admin = $this->createRole('admin', 'Admin');
 
         $permission = $this->createPermission('delete', 'Delete');

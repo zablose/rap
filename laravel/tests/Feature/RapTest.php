@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Feature;
 
@@ -11,7 +13,7 @@ class RapTest extends TestCase
     {
         $user = $this->createUser();
 
-        $role       = $this->createRole('admin', 'Admin');
+        $role = $this->createRole('admin', 'Admin');
         $permission = $this->createPermission('update', 'Update');
 
         $role->attachPermission($permission);

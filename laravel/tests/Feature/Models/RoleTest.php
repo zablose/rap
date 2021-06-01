@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Feature\Models;
 
@@ -10,7 +12,7 @@ class RoleTest extends TestCase
     public function get_users_by_role(): void
     {
         $sergejs = $this->createUser();
-        $jane    = $this->createUser();
+        $jane = $this->createUser();
 
         $role = $this->createRole('user', 'User');
 

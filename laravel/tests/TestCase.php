@@ -3,6 +3,7 @@
 namespace Tests;
 
 use App\Models\User;
+use Database\Factories\UserFactory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Zablose\Rap\Models\Permission;
@@ -15,7 +16,7 @@ abstract class TestCase extends BaseTestCase
 
     protected function createUser(array $attributes = []): User
     {
-        return User::factory()->create($attributes);
+        return (new UserFactory())->create($attributes);
     }
 
     protected function createRole(string $name, string $description): Role
