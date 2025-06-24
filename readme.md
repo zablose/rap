@@ -1,6 +1,7 @@
-# RaP - Roles and Permissions
+![](https://github.com/zablose/rap/actions/workflows/tests-on-master.yml/badge.svg)
+![](https://github.com/zablose/rap/actions/workflows/tests-on-dev.yml/badge.svg)
 
-[![Build Status](https://travis-ci.org/zablose/rap.svg?branch=dev)](https://travis-ci.org/zablose/rap)
+# RaP - Roles and Permissions
 
 ## Publish
 
