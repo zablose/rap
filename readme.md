@@ -10,7 +10,7 @@
 
 ## Development
 
-> Check submodule [readme](https://github.com/zablose/docker-damp/blob/master/readme.md) for more details about
+> Check submodule [readme](https://github.com/zablose/docker-images/blob/master/readme.md) for more details about
 > development environment used.
 
 ### Hosts
@@ -18,8 +18,7 @@
 Append to `/etc/hosts`.
 
 ```
-127.0.0.1       rap.zdev
-127.0.0.1       www.rap.zdev
+127.0.0.24      rap.zdev
 ```
 
 ## License
