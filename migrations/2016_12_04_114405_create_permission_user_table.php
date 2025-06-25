@@ -16,7 +16,7 @@ class CreatePermissionUserTable extends Migration
                 $table->collation = 'utf8_unicode_ci';
 
                 $table->bigIncrements('id');
-                $table->unsignedInteger('user_id')->index();
+                $table->unsignedBigInteger('user_id')->index();
                 $table->unsignedInteger('permission_id')->index();
                 $table->timestamps();
 
