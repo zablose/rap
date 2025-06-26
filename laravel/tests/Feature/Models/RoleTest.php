@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Models;
 
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class RoleTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function get_users_by_role(): void
     {
         $sergejs = $this->createUser();
@@ -26,7 +27,7 @@ class RoleTest extends TestCase
         $this->assertTrue($users->contains('name', $jane->name));
     }
 
-    /** @test */
+    #[Test]
     public function get_permissions_by_role(): void
     {
         $role = $this->createRole('user', 'User');
@@ -43,7 +44,7 @@ class RoleTest extends TestCase
         $this->assertTrue($permissions->contains('name', $update->name));
     }
 
-    /** @test */
+    #[Test]
     public function detach_permission_from_a_role(): void
     {
         $role = $this->createRole('user', 'User');
@@ -61,7 +62,7 @@ class RoleTest extends TestCase
         $this->assertTrue($role->permissions()->get()->count() === 0);
     }
 
-    /** @test */
+    #[Test]
     public function detach_all_permissions_from_a_role(): void
     {
         $role = $this->createRole('user', 'User');

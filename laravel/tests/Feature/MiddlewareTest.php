@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class MiddlewareTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function user_with_role_can_access_route(): void
     {
         $user = $this->createUser();
@@ -24,7 +25,7 @@ class MiddlewareTest extends TestCase
             ->assertSee('User');
     }
 
-    /** @test */
+    #[Test]
     public function user_with_permission_can_access_route(): void
     {
         $user = $this->createUser();
