@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class RapTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function attach_and_detach_role_with_permission_to_the_user(): void
     {
         $user = $this->createUser();
@@ -32,7 +33,7 @@ class RapTest extends TestCase
         $this->assertFalse($user->rap()->can([$permission->name]));
     }
 
-    /** @test */
+    #[Test]
     public function attach_and_detach_permission_to_the_user(): void
     {
         $user = $this->createUser();
@@ -50,7 +51,7 @@ class RapTest extends TestCase
         $this->assertFalse($user->fresh()->rap()->can([$permission->name]));
     }
 
-    /** @test */
+    #[Test]
     public function detach_all_roles_from_a_user(): void
     {
         $user = $this->createUser();
@@ -68,7 +69,7 @@ class RapTest extends TestCase
         $this->assertTrue($user->rap()->roles()->get()->count() === 0);
     }
 
-    /** @test */
+    #[Test]
     public function detach_all_permissions_from_a_user(): void
     {
         $user = $this->createUser();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class BladeExtensionsTest extends TestCase
@@ -15,7 +16,7 @@ class BladeExtensionsTest extends TestCase
         $this->artisan('view:clear');
     }
 
-    /** @test */
+    #[Test]
     public function user_with_role_can_see_content(): void
     {
         $user = $this->createUser();
@@ -32,7 +33,7 @@ class BladeExtensionsTest extends TestCase
             ->assertDontSee('Password Update');
     }
 
-    /** @test */
+    #[Test]
     public function user_with_permission_can_see_content(): void
     {
         $user = $this->createUser();

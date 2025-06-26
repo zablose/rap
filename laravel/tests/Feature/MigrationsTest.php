@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use Illuminate\Support\Facades\File;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 use Zablose\Rap\RapServiceProvider;
 
 class MigrationsTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function are_publishable(): void
     {
         $path = database_path('migrations').DIRECTORY_SEPARATOR;

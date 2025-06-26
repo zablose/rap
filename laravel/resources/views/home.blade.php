@@ -1,4 +1,4 @@
-<h1>Welcome</h1>
+<h1>Home</h1>
 
 @role(['user'])
 <h1>User</h1>

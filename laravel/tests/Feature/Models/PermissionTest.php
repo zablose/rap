@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Models;
 
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class PermissionTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function get_users_by_permission(): void
     {
         $sergejs = $this->createUser();
@@ -26,7 +27,7 @@ class PermissionTest extends TestCase
         $this->assertTrue($users->contains('name', $jane->name));
     }
 
-    /** @test */
+    #[Test]
     public function get_roles_by_permission(): void
     {
         $role_user = $this->createRole('user', 'User');

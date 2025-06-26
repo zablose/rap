@@ -17,7 +17,7 @@ class CreateRoleUserTable extends Migration
 
                 $table->bigIncrements('id');
                 $table->unsignedInteger('role_id')->index();
-                $table->unsignedInteger('user_id')->index();
+                $table->unsignedBigInteger('user_id')->index();
                 $table->timestamps();
 
                 $table->foreign('role_id')->references('id')->on('rap_roles')->onDelete('cascade');
